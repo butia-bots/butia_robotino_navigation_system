@@ -19,6 +19,6 @@
   <include file="$(find robotino_description)/config/gmapping.launch.xml"/>
 
   <!-- Inicia teleop pelo teclado -->
-  <!-- INSERIR AQUI O NOME DO NODO QUE ESTAO/VAO UTILIZAR PRO TELEOP E DESCOMENTEM A LINHA -->
-  <!-- <node pkg="" type="" name="" output="screen"/> -->
+  <!-- INSERIR AQUI O NOME DO NODO QUE ESTAO/VAO UTILIZAR PRO TELEOP -->
+  <node pkg="" type="" name="" output="screen"/>
 </launch>

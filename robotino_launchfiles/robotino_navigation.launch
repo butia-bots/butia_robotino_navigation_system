@@ -7,7 +7,7 @@
   <!-- Start map_server -->
   <!-- MUDAR O NOME DO MAPA PARA O QUE FOI SALVO PELO SLAM. -->
   <!-- O MAPA TEM QUE SER COLOCADO NA PASTA "robotino_gazebo/maps/"-->
-  <arg name="map" default="$(find robotino_gazebo)/maps/TROCAR-DO-MAPA.yaml" />
+  <arg name="map" default="$(find robotino_launchfiles)/maps/TROCAR-DO-MAPA.yaml" />
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map)" output="screen" />
 
   <!-- Inicia o rViz com o arquivo de configuracao -->
