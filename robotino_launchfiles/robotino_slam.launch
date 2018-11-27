@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<launch>
+  <!-- Cria a tf do hokuyo_link -> base_link (robotino) -->
+  <!-- CORRIGIR COM A RELACAO E NOMES DOS FRAMES CORRETOS  -->
+  <node pkg="tf" type="static_transform_publisher" name="hokuyo_tf_broadcaster" args="0 0 0 0 0 0 1 base_link hokuyo_link 100" output="screen"/>
+
+  <!-- Inicia o rViz com o arquivo de configuracao -->
+  <!-- Voces podem adicionar os topicos que querem que abram automaticamente e salvar pelo rviz que a mudanca vai ser aplicada permanentemente -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find robotino_launchfiles)/robotino_slam.rviz" required="true"/>
+
+  <!-- Inicia nodo do hokuyo -->
+  <include file="$(find robotino_description)/config/urg.launch.xml"/>
+
+  <!-- Inicia nodo do robotino -->
+  <!-- ACREDITO QUE SEJA ISSO AQUI MESMO, MAS VERIFIQUEM SE O NODO STARTA OK (VAI ESTAR PUBLICANDO NO /odom E OUTROS TOPICOS LISTADOS NA WIKI -->
+  <node pkg="robotino_node" type="robotino_node" name="robotino_node" output="screen"/>
+
+  <!-- Gmapping -->
+  <include file="$(find robotino_description)/config/gmapping.launch.xml"/>
+
+  <!-- Inicia teleop pelo teclado -->
+  <!-- INSERIR AQUI O NOME DO NODO QUE ESTAO/VAO UTILIZAR PRO TELEOP E DESCOMENTEM A LINHA -->
+  <!-- <node pkg="" type="" name="" output="screen"/> -->
+</launch>

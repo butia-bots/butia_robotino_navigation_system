@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<launch>
+  <!-- Cria a tf do hokuyo_link -> base_link (robotino) -->
+  <!-- CORRIGIR COM A RELACAO E NOMES DOS FRAMES CORRETOS  -->
+  <node pkg="tf" type="static_transform_publisher" name="hokuyo_tf_broadcaster" args="0 0 0 0 0 0 1 base_link hokuyo_link 100" output="screen"/>
+
+  <!-- Start map_server -->
+  <!-- MUDAR O NOME DO MAPA PARA O QUE FOI SALVO PELO SLAM. -->
+  <!-- O MAPA TEM QUE SER COLOCADO NA PASTA "robotino_gazebo/maps/"-->
+  <arg name="map" default="$(find robotino_gazebo)/maps/TROCAR-DO-MAPA.yaml" />
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map)" output="screen" />
+
+  <!-- Inicia o rViz com o arquivo de configuracao -->
+  <!-- Voces podem adicionar os topicos que querem que abram automaticamente e salvar pelo rviz que a mudanca vai ser aplicada permanentemente -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find robotino_launchfiles)/robotino_navigation.rviz" required="true"/>
+
+  <!-- Inicia nodo do hokuyo -->
+  <include file="$(find robotino_description)/config/urg.launch.xml"/>
+
+  <!-- Inicia nodo do robotino -->
+  <!-- ACREDITO QUE SEJA ISSO AQUI MESMO, MAS VERIFIQUEM SE O NODO STARTA OK (VAI ESTAR PUBLICANDO NO /odom E OUTROS TOPICOS LISTADOS NA WIKI -->
+  <node pkg="robotino_node" type="robotino_node" name="robotino_node" output="screen"/>
+
+  <!-- Localization -->
+  <include file="$(find robotino_description)/config/amcl_omni.launch.xml"/>
+
+  <!-- Move base -->
+  <!-- TALVEZ SEJA NECESSARIO REPAMEAR OS TOPICOS cmd_vel E odom. 
+  VERIFICAR SE ESTAO NO NAMESPACE RAIZ '/' MESMO OU ALGO COMO /robotino/cmd_vel-->
+  <arg name="cmd_vel" default="/cmd_vel"/>
+  <arg name="odom" default="/odom"/>
+
+  <include file="$(find robotino_description)/config/move_base.launch.xml">
+    <arg name="cmd_vel_topic" value="$(arg cmd_vel)"/>
+    <arg name="odom_topic" value="$(arg odom)"/>
+  </include>
+
+</launch>
